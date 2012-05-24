@@ -20,5 +20,10 @@ namespace EPiMVP
             PageViewHost.Register(this, Context);
             base.OnInit(e);
         }
+
+    	public bool ThrowExceptionIfNoPresenterBound
+    	{
+			get { return true; }
+    	}
     }
 }

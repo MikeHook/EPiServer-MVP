@@ -24,5 +24,10 @@ namespace EPiMVP
                 _model = value;
             }
         }
-    }
+
+		public bool ThrowExceptionIfNoPresenterBound
+		{
+			get { return true; }
+		}
+	}
 }

@@ -17,5 +17,11 @@ namespace EPiMVP
 
             base.OnInit(e);
         }
-    }
+
+
+		public bool ThrowExceptionIfNoPresenterBound
+		{
+			get { return true; }
+		}
+	}
 }
