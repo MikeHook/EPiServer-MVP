@@ -97,16 +97,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EPiMvpPage.cs">
+    <Compile Include="EPiViewPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="EPiMvpPage`T.cs">
+    <Compile Include="EPiViewPage`T.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="EPiMvpUserControl.cs">
+    <Compile Include="EPiViewUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="EPiMvpUserControl`T.cs">
+    <Compile Include="EPiViewUserControl`T.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="EPiPresenter.cs" />

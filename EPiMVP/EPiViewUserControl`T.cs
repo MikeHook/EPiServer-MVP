@@ -1,12 +1,8 @@
 ﻿using System;
-using EPiMVP;
 
 namespace EPiMVP
 {
-    /// <summary>
-    /// Represents a page that is a view with a strongly typed model in a Web Forms Model-View-Presenter application.
-    /// </summary>
-    public abstract class EPiView<TModel> : EPiMvpPage, IEPiView<TModel> where TModel : class, new()
+    public abstract class EPiViewUserControl<TModel> : EPiViewUserControl, IEPiView<TModel> where TModel : class, new()
     {
         TModel _model;
 
@@ -28,5 +24,10 @@ namespace EPiMVP
                 _model = value;
             }
         }
-    }
+
+		public bool ThrowExceptionIfNoPresenterBound
+		{
+			get { return true; }
+		}
+	}
 }
