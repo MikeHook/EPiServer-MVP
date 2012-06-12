@@ -28,26 +28,47 @@ namespace EPiMVP.Castle
 				return false;
 		}
 
-		protected override IPresenter CreatePresenterInstance(Type presenterType, TypedPageData pageData, Type viewType, IEPiView view)
+		protected override IPresenter CreatePageDataPresenterInstance(Type presenterType, TypedPageData pageData, Type viewType, IEPiView view)
 		{
-			if (presenterType == (Type)null)
+			if (presenterType == (Type) null)
 				throw new ArgumentNullException("presenterType");
-			if (viewType == (Type)null)
+			if (viewType == (Type) null)
 				throw new ArgumentNullException("viewType");
 			if (view == null)
 				throw new ArgumentNullException("view");
 			Dictionary<string, object> dictionary = new Dictionary<string, object>()
-      {
-        {
-          "view",
-          (object) view
-        },
-        {
-          "pageData",
-          (object) pageData
-        }
-      };
-			return (IPresenter)this.presenterKernel.Resolve(presenterType, (IDictionary)dictionary);
+			                                        	{
+			                                        		{
+			                                        			"view",
+			                                        			(object) view
+			                                        			},
+			                                        		{
+			                                        			"pageData",
+			                                        			(object) pageData
+			                                        			}
+			                                        	};
+			return (IPresenter) this.presenterKernel.Resolve(presenterType, (IDictionary) dictionary);
+		}
+
+		/// <summary>
+		/// Create a presenter instance without the pageData parameter
+		/// </summary>
+		protected override IPresenter CreatePresenterInstance(Type presenterType, Type viewType, IEPiView view)
+		{
+			if (presenterType == (Type) null)
+				throw new ArgumentNullException("presenterType");
+			if (viewType == (Type) null)
+				throw new ArgumentNullException("viewType");
+			if (view == null)
+				throw new ArgumentNullException("view");
+			Dictionary<string, object> dictionary = new Dictionary<string, object>()
+			                                        	{
+			                                        		{
+			                                        			"view",
+			                                        			(object) view
+			                                        			}
+			                                        	};
+			return (IPresenter) this.presenterKernel.Resolve(presenterType, (IDictionary) dictionary);
 		}
 	}
 }

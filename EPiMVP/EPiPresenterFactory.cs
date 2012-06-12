@@ -34,17 +34,19 @@ namespace EPiMVP
             Type genericPresenterViewType = GetGenericPresenterViewType(viewType);
 
             // Validate and check the Presenter type.
-            //var correctPresenterType = typeof(EPiPresenter<,>).MakeGenericType(new Type[] { genericPresenterViewType, pageDataType });
-            //if (!presenterType.IsSubclassOf(correctPresenterType))
-            //    throw new InvalidCastException("Tried to create presenter of type " +presenterType + 
-            //        ". This kernel can (and should) only create presenters that are a subclass of " + correctPresenterType + "."+
-            //        " This bugger, however, is a subclass of " + presenterType.BaseType);
-            
-            // Check if the Presenter has a usable constructor.
-            if (!CanCreateInstance(viewType, pageDataType, presenterType))
-                throw new NullReferenceException("Did not find a suitable constructor on the presenter of type " + presenterType + ". "
-                                                 + "The presenter constructor requires two parameters, the FIRST one accepting a " + viewType + " and a the SECOND one a " + pageDataType + ".");
-            return (IPresenter)CreatePresenterInstance(presenterType, (TypedPageData)epiView.CurrentPage, viewType, epiView);
+			var pageDataPresenterType = typeof(EPiPageDataPresenter<,>).MakeGenericType(new Type[] { genericPresenterViewType, pageDataType });
+			if (presenterType.IsSubclassOf(pageDataPresenterType))
+			{
+				// Check if the Presenter has a usable constructor.
+				if (!CanCreatePageDataPresenterInstance(viewType, pageDataType, presenterType))
+					throw new NullReferenceException("Did not find a suitable constructor on the presenter of type " + presenterType +
+					                                 ". "
+					                                 + "The presenter constructor requires two parameters, the FIRST one accepting a " +
+					                                 viewType + " and a the SECOND one a " + pageDataType + ".");
+				return
+					(IPresenter) CreatePageDataPresenterInstance(presenterType, (TypedPageData) epiView.CurrentPage, viewType, epiView);
+			}
+        	return (IPresenter)CreatePresenterInstance(presenterType, viewType, epiView);
         }
 
         protected Type GetPageDataType(IEPiView epiView)
@@ -78,7 +80,7 @@ namespace EPiMVP
             return abstractionInterface ?? viewType;
         }
 
-        protected virtual bool CanCreateInstance(Type viewType, Type pageDataType, Type presenterType)
+        protected virtual bool CanCreatePageDataPresenterInstance(Type viewType, Type pageDataType, Type presenterType)
         {
             var constructors = presenterType.GetConstructors();
             foreach (var constructor in constructors)
@@ -106,14 +108,19 @@ namespace EPiMVP
         /// overridden in case you need to do more stuff to the Presenter
         /// when creating it (injecting services using an IOC container, for instance).
         /// </summary>
-        protected virtual IPresenter CreatePresenterInstance(Type presenterType, TypedPageData pageData, Type viewType, IEPiView view)
+		protected virtual IPresenter CreatePageDataPresenterInstance(Type presenterType, TypedPageData pageData, Type viewType, IEPiView view)
         {
             return (IPresenter)Activator.CreateInstance(presenterType, new object[] { view, pageData });
         }
-        
-        
 
-        /// <summary>
+		protected virtual IPresenter CreatePresenterInstance(Type presenterType, Type viewType, IEPiView view)
+		{
+			return (IPresenter) Activator.CreateInstance(presenterType, new object[] {view});
+		}
+
+
+
+    	/// <summary>
         /// Releases the specified presenter.
         /// </summary>
         /// <param name="presenter">The presenter.</param>
